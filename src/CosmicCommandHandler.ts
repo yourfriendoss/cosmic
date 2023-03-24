@@ -1,8 +1,8 @@
 /**
  * COSMIC PROJECT
- * 
+ *
  * Cosmic command handler module
- * 
+ *
  * Command loader and interface
  */
 
@@ -19,9 +19,9 @@ const fs = require('fs');
  * Local module imports
  */
 
-const { Message, CommandMessage, Prefix, PermissionGroupIdentifier } = require('./CosmicTypes');
+const { Message, CommandMessage, Prefix, PermissionGroupIdentifier } = require('./util/CosmicTypes');
 const { CosmicClient } = require('./CosmicClient');
-const { CosmicUtil } = require('./CosmicUtil');
+const { CosmicUtil } = require('./util/CosmicUtil');
 const { CosmicLogger, magenta } = require('./CosmicLogger');
 const { CosmicData } = require('./CosmicData');
 
@@ -128,7 +128,7 @@ class CosmicCommandHandler {
             const groups = await CosmicData.getGroups(msg.sender._id);
 
             let hasPerms = false;
-            
+
             for (let g of cmd.permissionGroups) {
                 if (groups.groups.indexOf(g) !== -1) hasPerms = true;
             }
@@ -139,7 +139,7 @@ class CosmicCommandHandler {
             if (cmd.platform !== cl.platform && cmd.platform !== 'all') continue;
 
             let out;
-            
+
             try {
                 out = await cmd.callback(msg, cl);
             } catch (err) {
@@ -204,7 +204,7 @@ for (let pre of prefixes.global) {
     });
 }
 
-require('./CosmicCommands');
+require('./commands/CosmicCommands');
 
 /**
  * Module exports

@@ -1,8 +1,8 @@
 /**
  * COSMIC PROJECT
- * 
+ *
  * Express API module
- * 
+ *
  * This is a mess.
  */
 
@@ -24,7 +24,7 @@ import { CosmicData } from '../CosmicData';
 const express = require('express');
 const path = require('path');
 const WebSocket = require('ws');
-const { CosmicLogger, yellow } = require('./CosmicLogger');
+const { CosmicLogger, yellow } = require('../CosmicLogger');
 
 const PORT = process.env.PORT || 3000;
 const SSL = process.env.SSL || 'false';
@@ -79,7 +79,7 @@ class CosmicAPI {
         this.app.set('trust proxy', true);
 
         this.setupRoutes();
-        
+
         if (SSL == 'true') {
             this.server = https.createServer({
                 cert, key
@@ -222,7 +222,7 @@ class CosmicAPI {
         if (!permissions) return false;
 
         let hasPermission = false;
-        
+
         if (permissionGroups) {
             // check group permission
             for (let group of permissionGroups) {
@@ -367,7 +367,7 @@ class CosmicAPI {
             let result = await CosmicData.getAPIKeyProfile(req.ip);
             res.json({ result });
         });
-        
+
         this.api.get('/tool', async (req, res) => {
             let answers: any = {
                 // 'What?': `I don't know`,
@@ -395,7 +395,7 @@ class CosmicAPI {
                     break;
                 }
             }
-            
+
             res.json(answer);
         });
 
@@ -463,11 +463,11 @@ class CosmicAPI {
             // res.status(404).json({ error: 'SORRY NOTHING' });
             res.status(404).json({ error: 'invalid request' });
         });
-        
+
         this.app.use(express.static(path.resolve(__dirname, '../../frontend')));
         this.app.use('/assets', express.static(path.resolve(__dirname, '../../assets')));
         this.app.use('/api', this.api);
-        
+
         this.app.get('*', (req, res) => {
             readFile(resolve(__dirname, '../../frontend/index.html'), (err, data) => {
                 if (err) {
@@ -489,7 +489,7 @@ try {
     CosmicAPI.permissionGroups = YAML.parse(readFileSync(resolve(__dirname, '../../config/apiPermissionGroups.yml')).toString());
 } catch (err) {
     CosmicAPI.logger.error('Unable to read permission group configuration, using default configuration instead');
-    
+
     CosmicAPI.permissionGroups = {
         'default': {
             'canSetPermissions': false,

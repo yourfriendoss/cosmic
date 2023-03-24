@@ -1,8 +1,8 @@
 /**
  * COSMIC PROJECT
- * 
+ *
  * Main Cosmic module
- * 
+ *
  * This file itself really isn't that large, but it loads everything else.
  */
 
@@ -22,7 +22,7 @@ const { EventEmitter } = require('events');
 import { CosmicClientHandler } from './CosmicClientHandler';
 import { CosmicData } from './CosmicData';
 const { CosmicLogger, magenta } = require('./CosmicLogger');
-const { CosmicAPI } = require('./CosmicAPI');
+const { CosmicAPI } = require('./api/CosmicAPI');
 
 /**
  * Module-level declarations
@@ -64,13 +64,13 @@ class Cosmic {
 
         // connect to database
         await CosmicData.start();
-        
+
         this.logger.log('Starting clients...');
 
         if (ENABLE_MPP == 'true') {
             this.startMPPClients();
         }
-        
+
         if (ENABLE_DISCORD == 'true') {
             CosmicClientHandler.startDiscordClient();
         }

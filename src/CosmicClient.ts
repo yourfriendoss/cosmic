@@ -1,8 +1,8 @@
 /**
  * COSMIC PROJECT
- * 
+ *
  * Cosmic client module
- * 
+ *
  * Client connections for outgoing services
  */
 
@@ -27,9 +27,9 @@ import { CosmicSeasonDetection } from './util/CosmicSeasonDetection';
 import  { Token, ChatMessage, Vector2, Participant } from './util/CosmicTypes';
 import { CosmicClientMPP } from './MPP/CosmicClientMPP';
 import { CosmicClientDiscord } from './Discord/CosmicClientDiscord';
-const { CosmicFFI } = require('./CosmicFFI');
+const { CosmicFFI } = require('./foreign/CosmicFFI');
 const { CosmicLogger, white, magenta, hex } = require('./CosmicLogger');
-const { CosmicForeignMessageHandler } = require('./CosmicForeignMessageHandler');
+const { CosmicForeignMessageHandler } = require('./foreign/CosmicForeignMessageHandler');
 const { CosmicData } = require('./CosmicData');
 
 /**
@@ -58,7 +58,7 @@ export abstract class CosmicClient {
     public platform: string;
 
     constructor() {
-        
+
     }
 
     public alreadyBound: boolean = false;
@@ -74,7 +74,7 @@ export abstract class CosmicClient {
                     let res2 = await CosmicData.insertUser(msg.sender);
                 }
             }
-            
+
             // check all chat messages for commands
             CosmicCommandHandler.checkCommand(msg, this);
 
