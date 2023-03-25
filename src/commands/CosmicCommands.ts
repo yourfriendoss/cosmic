@@ -1,8 +1,8 @@
 /**
  * COSMIC PROJECT
- * 
+ *
  * Cosmic commands
- * 
+ *
  * Command imports
  */
 
@@ -45,6 +45,5 @@ import './addgroup';
 import './removegroup';
 import './additemcount';
 import './screamdownears';
-import './chandle';
 import './work';
 import './level';

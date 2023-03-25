@@ -1,6 +1,5 @@
 import { CosmicClientToken, ChannelConstructionPreset } from "../CosmicClient";
 import { CosmicCommandHandler } from "../CosmicCommandHandler";
-import { CosmicForeignMessageHandler } from "../foreign/CosmicForeignMessageHandler";
 import { CosmicSeasonDetection } from "../util/CosmicSeasonDetection";
 import { Vector2, Participant } from "../util/CosmicTypes";
 import { Cursor } from './Cursor';
@@ -11,12 +10,12 @@ const cmapi = require('mppclone-cmapi');
 export class CosmicClientMPP extends CosmicClientToken {
     protected started: boolean = false;
     protected desiredChannel: ChannelConstructionPreset;
-    
+
     protected desiredUser = {
         name: `🟇 Cosmic (${CosmicCommandHandler.prefixes[0].prefix}${CosmicCommandHandler.commands.find(cmd => cmd.id == 'help').accessors[0]})${process.env.NODE_ENV == 'production' ? '' : ' [non-production]'}`,
         color: '#1d0054'
     };
-    
+
     public client: typeof Client;
     public cursor: Cursor;
     public platform: string = 'mpp';
@@ -32,14 +31,14 @@ export class CosmicClientMPP extends CosmicClientToken {
         this.cursor = new Cursor(this);
         this.bindEventListeners();
     }
-    
+
     /**
      * Start the client
      * @returns undefined
      */
     public start(): void {
         if (this.started == true) return;
-        
+
         this.logger.log(`Starting in ${this.desiredChannel._id}...`);
         this.started = true;
         this.client.start();
@@ -61,17 +60,19 @@ export class CosmicClientMPP extends CosmicClientToken {
         super.bindEventListeners();
 
         this.client.on('a', msg => {
-            // process.stdout.write(`[${msg.p._id.substring(0, 6)}] ${msg.p.name}: ${msg.a}\n`);
-            // ffi broke :(
-            // console.log(CosmicFFI.clib.red(msg.a));
-
             msg.original_channel = {
                 _id: this.client.channel._id,
                 id: this.client.channel._id
             }
-
-            let newmsg = CosmicForeignMessageHandler.convertMessage('chat', msg);
-            this.emit('chat', newmsg);
+            this.emit('chat', {
+                type: 'chat',
+                sender: msg.p,
+                message: msg.a,
+                timestamp: Date.now(),
+                original_channel: msg.original_channel,
+                original_message: msg,
+                platform: 'internal'
+            });
         });
 
         this.client.on('dm', msg => {
@@ -84,9 +85,15 @@ export class CosmicClientMPP extends CosmicClientToken {
             msg.p = msg.sender;
 
             this.last_dm = msg.p;
-
-            let newmsg = CosmicForeignMessageHandler.convertMessage('chat', msg);
-            this.emit('chat', newmsg);
+            this.emit('chat', {
+                type: 'chat',
+                sender: msg.p,
+                message: msg.a,
+                timestamp: Date.now(),
+                original_channel: msg.original_channel,
+                original_message: msg,
+                platform: 'internal'
+            });
         });
 
         this.client.on('hi', msg => {
@@ -105,9 +112,9 @@ export class CosmicClientMPP extends CosmicClientToken {
             if (!this.client.isConnected()) return;
 
             this.setSeasonalInfo();
-            
+
             let set = this.client.getOwnParticipant();
-            
+
             if (set.name !== this.desiredUser.name || set.color !== this.desiredUser.color) {
                 // this.logger.debug('sending userset');
                 this.client.sendArray([{
@@ -181,7 +188,7 @@ export class CosmicClientMPP extends CosmicClientToken {
         x: 100,
         y: 200
     };
-    
+
     /**
      * Set the client's cursor position
      * @param x X position

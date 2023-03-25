@@ -1,5 +1,4 @@
 import { CosmicClientToken } from "../CosmicClient";
-import { CosmicForeignMessageHandler } from "../foreign/CosmicForeignMessageHandler";
 import * as Discord from "discord.js";
 
 // ANCHOR Discord client
@@ -36,7 +35,7 @@ export class CosmicClientDiscord extends CosmicClientToken {
         // setup REST for slash commands
         this.rest = new Discord.REST({ version: '10' }).setToken(token);
     }
-    
+
     /**
      * Stop Discord client
      */
@@ -60,7 +59,7 @@ export class CosmicClientDiscord extends CosmicClientToken {
             '>',
             '-'
         ];
-        
+
         for (const char of special_chars) {
             str = str.split(char).join(`\\${char}`);
         }
@@ -92,21 +91,23 @@ export class CosmicClientDiscord extends CosmicClientToken {
         });
 
         this.client.on('messageCreate', msg => {
-            let newmsg = CosmicForeignMessageHandler.convertMessage('chat', {
-                a: msg.content,
-                p: {
+            this.previousChannel = msg.channel.id;
+            this.emit('chat', {
+                type: 'chat',
+                sender: {
                     name: msg.author.username,
                     _id: msg.author.id,
                     color: msg.member.displayHexColor
                 },
+                message: msg.content,
+                timestamp: Date.now(),
                 original_channel: {
                     id: msg.channel.id,
                     _id: (msg.channel as any).name
-                }
+                },
+                original_message: msg,
+                platform: 'internal'
             });
-            
-            this.previousChannel = msg.channel.id;
-            this.emit('chat', newmsg);
         });
 
         this.on('send chat message', msg => {

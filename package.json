@@ -5,11 +5,8 @@
   "main": "build/node/index.js",
   "scripts": {
     "boot": "scripts/sh/boot.sh",
-    "build": "npm run build-c && npm run build-node && npm run esbuild",
+    "build": "npm run build-node && npm run esbuild",
     "build-node": "scripts/sh/build-node.sh",
-    "build-nim": "scripts/sh/build-nim.sh",
-    "build-c": "scripts/sh/build-c.sh",
-    "build-deno": "scripts/sh/build-deno.sh",
     "build-userscript": "node scripts/js/userscript.esbuild.js",
     "dev": "npm run build && npm run start",
     "esbuild": "node scripts/js/esbuild.js",

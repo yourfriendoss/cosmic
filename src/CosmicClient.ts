@@ -27,9 +27,7 @@ import { CosmicSeasonDetection } from './util/CosmicSeasonDetection';
 import  { Token, ChatMessage, Vector2, Participant } from './util/CosmicTypes';
 import { CosmicClientMPP } from './MPP/CosmicClientMPP';
 import { CosmicClientDiscord } from './Discord/CosmicClientDiscord';
-const { CosmicFFI } = require('./foreign/CosmicFFI');
 const { CosmicLogger, white, magenta, hex } = require('./CosmicLogger');
-const { CosmicForeignMessageHandler } = require('./foreign/CosmicForeignMessageHandler');
 const { CosmicData } = require('./CosmicData');
 
 /**

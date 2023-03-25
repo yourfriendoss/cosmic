@@ -31,7 +31,7 @@ CosmicCommandHandler.registerCommand(new Command(
                     if (cmd.platform) {
                         if (cmd.platform !== cl.platform && cmd.platform !== 'all') continue;
                     }
-                    
+
                     if (cmd.commandGroup !== group.id) continue;
                     if (cmd.visible == false) continue;
                     out += ` ${msg.prefix.prefix}${cmd.accessors[0]}, `;
@@ -44,7 +44,7 @@ CosmicCommandHandler.registerCommand(new Command(
             // return out;
         } else {
             let out = `There is no help for '${msg.argv[1]}'.`;
-            
+
             bigLoop:
             for (let cmd of CosmicCommandHandler.commands) {
                 if (cmd.platform) {
