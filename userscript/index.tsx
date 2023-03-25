@@ -57,9 +57,9 @@ window.addEventListener('load', evt => {
 
         return (
             <>
-                <div class="text-[20px] bg-[#00000055] rounded p-[5px] max-w-[200px]">
+                <div class="text-[20px] bg-[#00000055] rounded p-[5px] max-w-[1000px]">
                     <div class="min-w-[100px] bg-slate-300 rounded p-[5px]" id="cosmic-window-header">Cosmic</div>
-                    <h1>Websocket status: {response}</h1>
+                    <p>WS: {response} HS: {handshake ? "true" : "false"}</p>
                 </div>
             </>
         )
@@ -72,11 +72,25 @@ window.addEventListener('load', evt => {
     }
 
     const ws = new WebSocket(serverUri);
+    let handshake = false;
 
     ws.addEventListener("open", () => {
         ws.send(JSON.stringify({
             m: "hi"
         }))
+    })
+
+    ws.addEventListener("message", (d) => {
+        let data;
+
+        try {
+            data = JSON.parse(d.data);
+        } catch {
+            return;
+        }
+        if(data.m == "hi") {
+            handshake = true;
+        }
     })
 
     // tailwind fucks with some of MPP's styles so here we fix them :+1:
