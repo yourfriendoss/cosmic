@@ -469,9 +469,9 @@ class CosmicAPI {
         this.app.use('/api', this.api);
 
         this.app.get('*', (req, res) => {
-            readFile(resolve(__dirname, '../../frontend/index.html'), (err, data) => {
+            readFile(resolve(__dirname, '../../../frontend/index.html'), (err, data) => {
                 if (err) {
-                    res.status(502).end('oops');
+                    res.status(502).end(`oops ${err}`);
                     return;
                 }
 
