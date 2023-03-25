@@ -3,7 +3,7 @@ import { CosmicData } from "../CosmicData";
 
 CosmicCommandHandler.registerCommand(new Command(
     'removegroup',
-    [ 'removegroup', 'rmg', 'rmgroup', 'grouprm' ],
+    [ 'removegroup', 'rg', 'rmgroup', 'grouprm' ],
     '%PREFIX%removegroup <userID> <groupID>',
     `Remove a group from a user profile.`,
     [ 'admin' ],
