@@ -20,11 +20,16 @@ window.addEventListener('load', evt => {
     let serverUri = localStorage.getItem('cosmic_uri');
 
     if (!serverUri) {
-        serverUri = 'wss://cosmic.hri7566.info';
+        serverUri = 'wss://cosmic.141.lv';
     }
 
     const ws = new WebSocket(serverUri);
 
+    ws.addEventListener("open", () => {
+        ws.send(JSON.stringify({
+            m: "hi"
+        }))
+    })
     // const root = ReactDOM.createRoot(document.getElementById('piano'));
     // root.render(<App />);
 

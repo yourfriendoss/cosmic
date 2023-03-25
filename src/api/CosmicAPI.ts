@@ -323,7 +323,7 @@ class CosmicAPI {
         });
 
         this.api.get('/genkey', async (req, res) => {
-            await CosmicData.createAPIKeyProfile(req.ip);
+            await CosmicData.getAPIKeyProfile(req.ip);
 
             let canGenerateKey = false;
             canGenerateKey = await this.hasPermission(req.ip, 'canGenerateKeys');
